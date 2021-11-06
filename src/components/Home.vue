@@ -2,7 +2,7 @@
   <div class="home">
     <header class="header">
       <div class="logo">
-        <img :src="astronaut" alt="" />
+        <img :src="require('@/assets/images/astronaut.svg')" alt="" />
       </div>
       <div class="text-header">
         <h3>Perguntas Frequentes</h3>
@@ -10,21 +10,14 @@
       </div>
     </header>
     <main class="main">
-      <div class="items" @click="goTo('Questions')">
-        <img :src="rocket" alt="" />
-        <p>Basecamp</p>
-      </div>
-      <div class="items">
-        <img :src="astronautHelmet" alt="" />
-        <p>Bootcamp</p>
-      </div>
-      <div class="items">
-        <img :src="studantHat" alt="" />
-        <p>Cataline</p>
-      </div>
-      <div class="items">
-        <img :src="partnership" alt="" />
-        <p>Parcerias</p>
+      <div
+        class="items"
+        v-for="(cat, index) in $allFaq"
+        :key="cat.id"
+        @click="goTo(index)"
+      >
+        <img :src="require(`@/assets/images/${cat.icon}`)" alt="" />
+        <p>{{ cat.title }}</p>
       </div>
     </main>
   </div>
@@ -32,18 +25,18 @@
 
 <script>
 export default {
-  data() {
-    return {
-      astronaut: require('@/assets/images/astronaut.svg'),
-      rocket: require('@/assets/images/rocket.svg'),
-      astronautHelmet: require('@/assets/images/astronaut-helmet.svg'),
-      studantHat: require('@/assets/images/student-hat.svg'),
-      partnership: require('@/assets/images/partnership.svg')
+  computed: {
+    $allFaq() {
+      return this.$store.getters.$allFaq
+    },
+    $currentView() {
+      return this.$store.getters.$currentView
     }
   },
   methods: {
-    goTo(view) {
-      this.$store.dispatch('newView',view)
+    goTo(index) {
+      const i = { ...this.$currentView, screen: 'Questions', categories: index, enter: true }
+      this.$store.dispatch('newView', i)
     }
   }
 }
@@ -71,7 +64,7 @@ export default {
 }
 
 .text-header p {
- font: normal 13px Lato;
+  font: normal 13px Lato;
 }
 
 .main {
@@ -89,5 +82,10 @@ export default {
   align-content: center;
   align-items: center;
   font: normal 16px Lato;
+}
+
+.items:hover {
+  background-color: var(--color1);
+  border-radius: 5px;
 }
 </style>

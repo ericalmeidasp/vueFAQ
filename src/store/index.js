@@ -4,7 +4,7 @@ import { faqCategories } from '@/utils/db.json'
 export default createStore({
   state: {
     faqQuestion: [],
-    currentView: 'Home'
+    currentView: { screen: 'Home', categories: 1, questions: {}, enter: true }
   },
   mutations: {
     SET_FAQ(state, faqQuestion) {
@@ -30,6 +30,9 @@ export default createStore({
     },
     $currentView(state) {
       return state.currentView
+    },
+    $currentCat(state) {
+      return state.faqQuestion[state.currentView.categories].questions
     }
   }
 })

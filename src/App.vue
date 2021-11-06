@@ -1,7 +1,16 @@
 <template>
   <div class="container">
     <div class="aplication">
-      <component :is="$currentView" />
+      <transition
+        mode="out-in"
+        :enter-active-class="
+          $currentView.enter
+            ? 'animate__animated animate__slideInRight animate__faster'
+            : 'animate__animated animate__slideInLeft animate__faster'
+        "
+      >
+        <component :is="$currentView.screen" />
+      </transition>
     </div>
   </div>
 </template>
@@ -10,6 +19,7 @@
 import Home from '@/components/Home.vue'
 import Questions from '@/components/Questions.vue'
 import Answer from '@/components/Answer.vue'
+import 'animate.css'
 
 export default {
   components: { Home, Questions, Answer },
@@ -21,9 +31,9 @@ export default {
       return this.$store.getters.$currentView
     }
   },
-  // created() {
-  //   this.$store.dispatch('newView', 'Home')
-  // }
+  created() {
+    this.$store.dispatch('fetchFaq')
+  }
 }
 </script>
 
@@ -33,6 +43,7 @@ export default {
   justify-content: center;
   align-content: center;
   height: 100vh;
+  overflow: hidden;
 }
 
 .aplication {

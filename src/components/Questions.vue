@@ -1,28 +1,57 @@
 <template>
   <div class="questions">
     <header class="header">
-      <img :src="arrowleft" alt="" class="backarrow" />
+      <img
+        :src="require('@/assets/images/arrow-left.svg')"
+        alt=""
+        class="backarrow"
+        @click="goBack"
+      />
       <div class="text-header">
-        <h3>Basecamp</h3>
+        <h3>{{ $allFaq[$currentView.categories].title }}</h3>
         <p>Selecione uma pergunta</p>
       </div>
-      <img :src="rocket" alt="" />
+      <img
+        :src="
+          require(`@/assets/images/${$allFaq[$currentView.categories].icon}`)
+        "
+        alt=""
+      />
     </header>
     <main class="main">
-      <div class="item-question">Basecamp é gratuito?</div>
-      <div class="item-question">Pergunta</div>
-      <div class="item-question">Pergunta</div>
-     
+      <div
+        v-for="(question, index) in $currentCat"
+        :key="question.id"
+        class="item-question"
+        @click="goTo(index)"
+      >
+        {{ question.title }}
+      </div>
     </main>
   </div>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      rocket: require('@/assets/images/rocket.svg'),
-      arrowleft: require('@/assets/images/arrow-left.svg')
+  computed: {
+    $allFaq() {
+      return this.$store.getters.$allFaq
+    },
+    $currentView() {
+      return this.$store.getters.$currentView
+    },
+    $currentCat() {
+      return this.$store.getters.$currentCat
+    }
+  },
+  methods: {
+    goBack() {
+      const i = {...this.$currentView, screen: 'Home', enter: false}
+      this.$store.dispatch('newView', i)
+    },
+    goTo(index) {
+      const i = {...this.$currentView, screen: 'Answer', questions: index, enter: true}
+      this.$store.dispatch('newView', i)
     }
   }
 }
@@ -44,6 +73,7 @@ export default {
   align-items: center;
   padding: 1.5rem;
   border-bottom: solid 1px var(--color1);
+  gap: 1rem;
 }
 
 .text-header {
@@ -68,5 +98,22 @@ export default {
 .item-question {
   color: var(--color3);
   font: normal 16px Lato;
+  height: 100%;
+  display: grid;
+  align-items: center;
+}
+
+.item-question:hover {
+  background-color: var(--color1);
+  border-radius: 5px;
+}
+
+.backarrow {
+  padding: 1rem;
+  justify-content: center;
+}
+.backarrow:hover {
+  background-color: var(--color0);
+  border-radius: 5px;
 }
 </style>
