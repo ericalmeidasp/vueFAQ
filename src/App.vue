@@ -57,5 +57,6 @@ export default {
   box-shadow: 0px 10px 30px #3f445266;
   border-radius: 15px;
   justify-content: center;
+  overflow: hidden;
 }
 </style>
