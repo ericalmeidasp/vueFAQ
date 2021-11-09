@@ -40,9 +40,12 @@ export default {
 <style scoped>
 .container {
   display: grid;
+  grid-template-columns: 305px;
+  grid-template-rows: 29.839rem;
   justify-content: center;
   align-content: center;
   height: 100vh;
+  background: #f5f6f8;
   overflow: hidden;
 }
 
